@@ -2,7 +2,7 @@
   "name": "bookmarks",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Jakub Sikorski <jakub.sikorski0211@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

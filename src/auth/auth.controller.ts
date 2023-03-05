@@ -16,5 +16,4 @@ export class AuthController {
     signin(@Body() dto: AuthDTO) {
         return this.authService.signin(dto);
     }
-    // TODO 2:06:02
 }

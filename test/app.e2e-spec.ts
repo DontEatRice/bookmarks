@@ -72,12 +72,68 @@ describe('App e2e', () => {
             });
         });
 
-        // describe('Edit user', () => {});
+        describe('Edit user', () => {
+            it('Should edit user', () => {
+                const dto = {
+                    firstName: 'Jakub',
+                    email: 'test@example.com',
+                };
+                return pactum
+                    .spec()
+                    .patch('/users')
+                    .withBody(dto)
+                    .withHeaders({
+                        Authorization: 'Bearer $S{userAt}',
+                    })
+                    .expectStatus(200)
+                    .expectBodyContains(dto.email)
+                    .expectBodyContains(dto.firstName);
+            });
+        });
     });
-    // describe('Bookmarks', () => {
-    //     describe('Get bookmarks', () => {});
-    //     describe('Get bookmark by id', () => {});
-    //     describe('Create bookmark', () => {});
-    //     describe('Edit bookmark', () => {});
-    // });
+    describe('Bookmarks', () => {
+        describe('Create bookmark', () => {
+            it('Create bookmark', () => {
+                const dto = {
+                    title: 'First bookmark',
+                    description: 'Lorem ipsum',
+                    link: 'https://example.com/',
+                };
+                return pactum
+                    .spec()
+                    .post('/bookmarks')
+                    .withHeaders({
+                        Authorization: 'Bearer $S{userAt}',
+                    })
+                    .withBody(dto)
+                    .expectStatus(201)
+                    .stores('bookmarkId', 'id');
+            });
+        });
+        describe('Get bookmarks', () => {
+            it('should get bookmarks', () => {
+                return pactum
+                    .spec()
+                    .get('/bookmarks')
+                    .withHeaders({
+                        Authorization: 'Bearer $S{userAt}',
+                    })
+                    .expectStatus(200)
+                    .expectJsonLength(1);
+            });
+        });
+        describe('Get bookmark by id', () => {
+            it('Get bookmark by id', () => {
+                return pactum
+                    .spec()
+                    .get('/bookmarks/{id}')
+                    .withPathParams('id', '$S{bookmarkId}')
+                    .withHeaders({
+                        Authorization: 'Bearer $S{userAt}',
+                    })
+                    .expectStatus(200)
+                    .expectBodyContains('$S{bookmarkId}');
+            });
+        });
+    });
 });
